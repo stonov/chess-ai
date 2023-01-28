@@ -15,7 +15,7 @@ public class ControllerMono : MonoBehaviour
     public Color32 validMoveColor = new Color32(0, 232, 162, 100);
     private GameState game;
     private SquareMono[,] displayGrid;
-    private List<PieceHologram> pieceHolograms;
+    private List<Piece> pieceList;
     private Vector2Int selectedSquarePosition = new Vector2Int(-1,-1);
     private List<Vector2Int> possibleMoves;
     
@@ -48,7 +48,7 @@ public class ControllerMono : MonoBehaviour
             }
         }
 
-        pieceHolograms = new List<PieceHologram>();
+        pieceList = new List<Piece>();
         possibleMoves = new List<Vector2Int>();
 
         game = new GameState();
@@ -58,12 +58,14 @@ public class ControllerMono : MonoBehaviour
     }
 
     private void SyncBoard() {
-        foreach(PieceHologram item in pieceHolograms) {
-            FindSquare(item.position).SetEmpty();
+        foreach(Piece item in pieceList) {
+            FindSquare(item.GetPosition()).SetEmpty();
         }
-        pieceHolograms = game.GetPieceHolograms();
-        foreach(PieceHologram item in pieceHolograms) {
-            FindSquare(item.position).SetPiece(item.sprite, item.color);
+        pieceList = game.GetPieceCopies();
+        foreach(Piece item in pieceList) {
+            if (item != null) {
+                FindSquare(item.GetPosition()).SetPiece(item.GetSprite(), item.GetColor());
+            }
         }
     }
 

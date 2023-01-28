@@ -4,7 +4,36 @@ using UnityEngine;
 
 public class Pawn : Piece {
     private int moveDirection;
-    public Pawn(uint newColor, Vector2Int newPosition) : base(newColor, newPosition){}
+    public Pawn(GameState _gameState, uint newColor, Vector2Int newPosition) : base(_gameState, newColor, newPosition) {
+        if (newColor == 0) {
+            moveDirection = 1;
+        } else {
+            moveDirection = -1;
+        }
+        GenerateMoveRays();
+    }
+
+    public override Piece GetCopy() {
+        Pawn copy = new Pawn(gameState, color, position);
+        copy.isMoved = isMoved;
+        return copy;
+    }
+
+    protected override void GenerateMoveRays() {
+        base.GenerateMoveRays();
+        MoveNode leftAttack = new MoveNode(color, new Vector2Int(position.x + moveDirection, position.y - 1));
+        MoveNode rightAttack = new MoveNode(color, new Vector2Int(position.x + moveDirection, position.y + 1));
+        MoveNode forwardStep = new MoveNode(false, color, new Vector2Int(position.x + moveDirection, position.y));
+        moveRays.Add(leftAttack);
+        moveRays.Add(rightAttack);
+        moveRays.Add(forwardStep);
+
+        if (!IsMoved()) {
+            MoveNode forwardStepFar = new MoveNode(forwardStep, false, color, new Vector2Int(position.x + moveDirection*2, position.y));
+            forwardStep.SetNextMoveNode(forwardStepFar);
+        }
+    }
+
     protected override string GetWhiteSpritePath() {
         return "Sprites/Chess_plt60";
     }
@@ -13,23 +42,17 @@ public class Pawn : Piece {
         return "Sprites/Chess_pdt60";
     }
 
-    override public bool IsEmpty() {
-        return false;
-    }
-
-    override public string GetName() {
-        return "Pawn";
-    }
-
-    override public List<Vector2Int> GetMoves() {
-        List<Vector2Int> moves = new List<Vector2Int>();
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (i != position.x && j != position.y) {
-                    moves.Add(new Vector2Int(i, j));
-                }
-            }
+    protected override bool IsMovePlayable(MoveNode move) {
+        Piece pieceAtMove = gameState.FindPieceCopy(move.GetPosition());
+        if (move.IsAttack()) {
+            return pieceAtMove != null
+                && (pieceAtMove.GetColor() != color);
+        } else {
+            return pieceAtMove == null;
         }
-        return moves;
+    }
+
+    public override string GetName() {
+        return "Pawn";
     }
 }
