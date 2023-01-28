@@ -141,6 +141,9 @@ public class GameState
         AddPieceToBoard(new Queen(this, 0, new Vector2Int(0, 3)));
         AddPieceToBoard(new Queen(this, 1, new Vector2Int(7, 3)));
 
+        AddPieceToBoard(new King(this, 0, new Vector2Int(0, 4)));
+        AddPieceToBoard(new King(this, 1, new Vector2Int(7, 4)));
+
         AddPieceToBoard(new Rook(this, 0, new Vector2Int(0, 0)));
         AddPieceToBoard(new Rook(this, 0, new Vector2Int(0, 7)));
         AddPieceToBoard(new Rook(this, 1, new Vector2Int(7, 0)));
