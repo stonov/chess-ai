@@ -132,6 +132,19 @@ public class GameState
         AddPieceToBoard(new Knight(this, 0, new Vector2Int(0, 6)));
         AddPieceToBoard(new Knight(this, 1, new Vector2Int(7, 1)));
         AddPieceToBoard(new Knight(this, 1, new Vector2Int(7, 6)));
+
+        AddPieceToBoard(new Bishop(this, 0, new Vector2Int(0, 2)));
+        AddPieceToBoard(new Bishop(this, 0, new Vector2Int(0, 5)));
+        AddPieceToBoard(new Bishop(this, 1, new Vector2Int(7, 2)));
+        AddPieceToBoard(new Bishop(this, 1, new Vector2Int(7, 5)));
+
+        AddPieceToBoard(new Queen(this, 0, new Vector2Int(0, 3)));
+        AddPieceToBoard(new Queen(this, 1, new Vector2Int(7, 3)));
+
+        AddPieceToBoard(new Rook(this, 0, new Vector2Int(0, 0)));
+        AddPieceToBoard(new Rook(this, 0, new Vector2Int(0, 7)));
+        AddPieceToBoard(new Rook(this, 1, new Vector2Int(7, 0)));
+        AddPieceToBoard(new Rook(this, 1, new Vector2Int(7, 7)));
         currentPlayerColor = 0;
     }
 

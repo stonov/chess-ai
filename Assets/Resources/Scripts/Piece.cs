@@ -77,6 +77,9 @@ public abstract class Piece {
             foreach(MoveNode moveNode in moveNodes) {
                 if (gameState.IsPositionValid(moveNode.GetPosition()) && IsMovePlayable(moveNode)) {
                     moves.Add(moveNode.GetPosition());
+                    if (gameState.FindPieceCopy(moveNode.GetPosition()) != null) {
+                        break;
+                    }
                 } else {
                     break;
                 }

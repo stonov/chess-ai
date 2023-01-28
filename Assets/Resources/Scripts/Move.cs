@@ -59,4 +59,13 @@ public class MoveNode {
         moves.Insert(0, this);
         return moves;
     }
+
+    public void ExtendInDirection(Vector2Int direction) {
+        if (position.x < 0 || position.y < 0 || position.x > 7 || position.y > 7) {
+            return;
+        }
+        MoveNode child = new MoveNode(this, parentColor, new Vector2Int(position.x + direction.x, position.y + direction.y));
+        SetNextMoveNode(child);
+        child.ExtendInDirection(direction);
+    }
 }
