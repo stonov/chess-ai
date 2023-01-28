@@ -52,12 +52,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cellPrefab: {fileID: 7417460831305602245, guid: 2e6eab6e71876654a9ab5edcfa48bd5c,
     type: 3}
+  cellSize: 60
+  numRanks: 8
+  numFiles: 8
   lightSquareColor:
     serializedVersion: 2
     rgba: 4290697715
   darkSquareColor:
     serializedVersion: 2
-    rgba: 4286625000
+    rgba: 4287147473
   unselectedColor:
     serializedVersion: 2
     rgba: 0

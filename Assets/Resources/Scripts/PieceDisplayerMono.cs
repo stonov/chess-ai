@@ -16,5 +16,10 @@ public class PieceDisplayerMono : MonoBehaviour
 
     public void SetSprite(Sprite newSprite) {
         image.sprite = newSprite;
+        image.color = new Color32(255,255,255,255);
+    }
+
+    public void SetEmpty() {
+        image.color = new Color32(0,0,0,0);
     }
 }
