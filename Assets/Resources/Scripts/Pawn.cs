@@ -41,12 +41,31 @@ public class Pawn : Piece {
     protected override string GetBlackSpritePath() {
         return "Sprites/Chess_pdt60";
     }
+    
+    private bool IsEnPassantAvailable(MoveNode move) {
+        Vector2Int movePosition = move.GetPosition();
+        Piece pieceBehindMove = gameState.FindPieceCopy(new Vector2Int(movePosition.x - moveDirection, movePosition.y));
+        List<Step> history = gameState.GetHistory();
+        if (history.Count < 1 || pieceBehindMove == null) {
+            return false;
+        }
+
+        Step lastStep = history[history.Count - 1];
+        bool isEnemyPawnBehindMove =
+            pieceBehindMove != null
+            && pieceBehindMove.GetPieceType() == PieceType.Pawn
+            && pieceBehindMove.GetColor() != color;
+        bool didEnemyPawnMoveLastTurn = lastStep.GetEnd().Equals(pieceBehindMove.GetPosition());
+        bool wasEnemyPawnAtStartLastTurn = lastStep.GetStart().x == 1 || lastStep.GetStart().x == 6;
+
+        return isEnemyPawnBehindMove && didEnemyPawnMoveLastTurn && wasEnemyPawnAtStartLastTurn;
+    }
 
     protected override bool IsMovePlayable(MoveNode move) {
-        Piece pieceAtMove = gameState.FindPieceCopy(move.GetPosition());
+        Vector2Int movePosition = move.GetPosition();
+        Piece pieceAtMove = gameState.FindPieceCopy(movePosition);
         if (move.IsAttack()) {
-            return pieceAtMove != null
-                && (pieceAtMove.GetColor() != color);
+            return (pieceAtMove != null && (pieceAtMove.GetColor() != color)) || IsEnPassantAvailable(move);
         } else {
             return pieceAtMove == null;
         }
@@ -54,5 +73,9 @@ public class Pawn : Piece {
 
     public override string GetName() {
         return "Pawn";
+    }
+
+    public override PieceType GetPieceType(){
+        return PieceType.Pawn;
     }
 }

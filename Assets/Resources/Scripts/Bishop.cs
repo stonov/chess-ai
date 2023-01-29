@@ -23,7 +23,7 @@ public class Bishop : Piece {
         MoveNode NERay = new MoveNode(color, new Vector2Int(position.x + 1, position.y + 1));
         MoveNode SWRay = new MoveNode(color, new Vector2Int(position.x - 1, position.y - 1));
         MoveNode SERay = new MoveNode(color, new Vector2Int(position.x - 1, position.y + 1));
-        
+
         NWRay.ExtendInDirection(new Vector2Int(1, -1));
         NERay.ExtendInDirection(new Vector2Int(1, 1));
         SWRay.ExtendInDirection(new Vector2Int(-1, -1));
@@ -37,5 +37,9 @@ public class Bishop : Piece {
 
     public override string GetName() {
         return "Bishop";
+    }
+
+    public override PieceType GetPieceType(){
+        return PieceType.Bishop;
     }
 }
