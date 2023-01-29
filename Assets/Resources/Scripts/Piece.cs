@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PieceType {
+    Pawn, Knight, Bishop, Rook, Queen, King
+}
+
 public abstract class Piece {
     private bool initialized = false;
     protected uint color;
@@ -31,6 +35,7 @@ public abstract class Piece {
     }
 
     public abstract string GetName();
+    public abstract PieceType GetPieceType();
     public abstract Piece GetCopy();
     protected virtual void GenerateMoveRays() {
         moveRays.Clear();

@@ -50,4 +50,8 @@ public class Queen : Piece {
     public override string GetName() {
         return "Queen";
     }
+
+    public override PieceType GetPieceType(){
+        return PieceType.Queen;
+    }
 }

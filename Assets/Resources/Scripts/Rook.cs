@@ -38,4 +38,8 @@ public class Rook : Piece {
     public override string GetName() {
         return "Rook";
     }
+
+    public override PieceType GetPieceType(){
+        return PieceType.Rook;
+    }
 }

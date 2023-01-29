@@ -32,4 +32,8 @@ public class Knight : Piece {
     public override string GetName() {
         return "Knight";
     }
+
+    public override PieceType GetPieceType(){
+        return PieceType.Knight;
+    }
 }

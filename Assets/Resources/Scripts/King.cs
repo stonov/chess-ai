@@ -41,4 +41,8 @@ public class King : Piece {
     public override string GetName() {
         return "King";
     }
+
+    public override PieceType GetPieceType(){
+        return PieceType.King;
+    }
 }

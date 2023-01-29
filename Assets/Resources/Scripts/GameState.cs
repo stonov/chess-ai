@@ -7,6 +7,7 @@ public class GameState
     private Dictionary<int, Piece> pieceList;
     private Piece[,] pieceGrid;
     private Dictionary<int, MoveNode>[,] moveGrid;
+    private List<Step> history;
     private int currentPlayerColor;
     private int piecesAddedCount;
     private int movesAddedCount;
@@ -15,12 +16,16 @@ public class GameState
         pieceList = new Dictionary<int, Piece>();
         pieceGrid = new Piece[8,8];
         moveGrid = new Dictionary<int, MoveNode>[8,8];
+        history = new List<Step>();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 moveGrid[i,j] = new Dictionary<int, MoveNode>();
+                pieceGrid[i,j] = null;
             }
         }
     }
+
+    public List<Step> GetHistory() { return history; }
 
     private void AddPieceToBoard(Piece piece) {
         piece.SetId(piecesAddedCount);
@@ -173,6 +178,29 @@ public class GameState
         }
     }
 
+    private bool IsMoveEnPassant(Vector2Int start, Vector2Int end) {
+        Piece pieceAtStart = FindPiece(start);
+        Piece pieceAtEnd = FindPiece(end);
+
+        // Was the piece moved to an empty square
+        if (pieceAtStart == null || pieceAtEnd != null) {
+            return false;
+        }
+
+        // Was the piece a pawn
+        if (pieceAtStart.GetPieceType() != PieceType.Pawn) {
+            return false;
+        }
+        
+        // Did it move diagonally
+        return (start.x != end.x && start.y != end.y);
+    }
+
+    private Piece FindEnPassantablePiece(Vector2Int start, Vector2Int end) {
+        Vector2Int enemyPawnPosition = new Vector2Int(start.x, end.y);
+        return FindPiece(enemyPawnPosition);
+    }
+
     public void RequestMove(Vector2Int start, Vector2Int end) {
         Piece selectedPiece = FindPiece(start);
         if (selectedPiece == null) {
@@ -181,7 +209,11 @@ public class GameState
         List<Vector2Int> moves = selectedPiece.GetMoves();
         foreach(Vector2Int move in moves) {
             if (move.Equals(end)) {
+                if (IsMoveEnPassant(start, end)) {
+                    RemovePieceFromBoard(FindEnPassantablePiece(start, end));
+                }
                 MovePiece(selectedPiece, end);
+                history.Add(new Step(start, end));
                 AdvanceTurn();
                 return;
             }
